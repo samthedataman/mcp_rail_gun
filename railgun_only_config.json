@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+        "railgun-mcp": {
+            "command": "/Users/samsavage/mcp_rail_gun/venv/bin/python",
+            "args": [
+                "-m",
+                "railgun_mcp"
+            ],
+            "env": {
+                "RAILGUN_API_URL": "https://api.railgun.org",
+                "RAILGUN_ENVIRONMENT": "mainnet"
+            }
+        }
+    }
+}

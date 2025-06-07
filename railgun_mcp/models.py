@@ -87,12 +87,16 @@ class Recipe:
 
 # Configuration
 class Config:
-    """Configuration management for Railgun MCP"""
+    """Configuration management for Railgun MCP - Direct blockchain interaction"""
 
     def __init__(self):
-        # Try to load from environment variables first
-        self.api_key = os.getenv("RAILGUN_API_KEY")
+        # Private key for wallet operations (required)
+        self.private_key = os.getenv("RAILGUN_PRIVATE_KEY")
+
+        # Wallet password for local encryption (optional)
         self.wallet_password = os.getenv("RAILGUN_WALLET_PASSWORD")
+
+        # RPC endpoints for direct blockchain connection
         self.rpc_endpoints = {
             "ethereum": os.getenv(
                 "ETHEREUM_RPC_URL", "https://eth-mainnet.g.alchemy.com/v2/your-api-key"
@@ -106,23 +110,64 @@ class Config:
             ),
             "bsc": os.getenv("BSC_RPC_URL", "https://bsc-dataseed.binance.org/"),
         }
-        self.railgun_api_url = os.getenv(
-            "RAILGUN_API_URL", "https://api.railgun.org/v1"
-        )
+
+        # RAILGUN smart contract addresses (mainnet)
+        self.railgun_contracts = {
+            "ethereum": {
+                "proxy": "0xFA7093CDD9EE6932B4eb2c9e1cde7CE00B1FA4b9",
+                "poseidon": "0x3e3a3D69dc66bA10737F531ed088954a9EC89d97",
+                "verifier": "0x87C7fd0635Fb4E2FE5A3b40d5a57E96cE01a0B7a",
+            },
+            "polygon": {
+                "proxy": "0x19b620929f97b7b990801496c3b361ca5def8c71",
+                "poseidon": "0x3e3a3D69dc66bA10737F531ed088954a9EC89d97",
+                "verifier": "0x87C7fd0635Fb4E2FE5A3b40d5a57E96cE01a0B7a",
+            },
+            "bsc": {
+                "proxy": "0x590162bf4b50f6576a459b75309ee21d92178a10",
+                "poseidon": "0x3e3a3D69dc66bA10737F531ed088954a9EC89d97",
+                "verifier": "0x87C7fd0635Fb4E2FE5A3b40d5a57E96cE01a0B7a",
+            },
+        }
+
+        # Network chain IDs
+        self.chain_ids = {"ethereum": 1, "polygon": 137, "bsc": 56, "arbitrum": 42161}
 
         # Try to load from config file if env vars not set
         config_path = Path.home() / ".railgun" / "config.json"
-        if config_path.exists() and not self.api_key:
+        if config_path.exists():
             try:
                 with open(config_path, "r") as f:
                     config_data = json.load(f)
-                    self.api_key = self.api_key or config_data.get("api_key")
+                    self.private_key = self.private_key or config_data.get(
+                        "private_key"
+                    )
                     self.wallet_password = self.wallet_password or config_data.get(
                         "wallet_password"
                     )
                     self.rpc_endpoints.update(config_data.get("rpc_endpoints", {}))
-                    self.railgun_api_url = config_data.get(
-                        "railgun_api_url", self.railgun_api_url
-                    )
+
+                    # Allow override of contract addresses if needed
+                    if "railgun_contracts" in config_data:
+                        for network, contracts in config_data[
+                            "railgun_contracts"
+                        ].items():
+                            if network in self.railgun_contracts:
+                                self.railgun_contracts[network].update(contracts)
+                            else:
+                                self.railgun_contracts[network] = contracts
+
             except Exception as e:
                 logger.warning(f"Failed to load config file: {e}")
+
+    def get_rpc_url(self, network: str) -> str:
+        """Get RPC URL for a network"""
+        return self.rpc_endpoints.get(network)
+
+    def get_chain_id(self, network: str) -> int:
+        """Get chain ID for a network"""
+        return self.chain_ids.get(network, 1)
+
+    def get_railgun_proxy(self, network: str) -> str:
+        """Get RAILGUN proxy contract address for a network"""
+        return self.railgun_contracts.get(network, {}).get("proxy")

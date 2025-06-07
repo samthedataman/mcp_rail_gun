@@ -1,13 +1,13 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: railgun-mcp
 Version: 0.1.0
 Summary: MCP server for Railgun privacy protocol - private DeFi made easy
-Author-email: Your Name <your.email@example.com>
+Author-email: Sam Savage <sam@quantdefi.ai>
 License: MIT
-Project-URL: Homepage, https://github.com/yourusername/railgun-mcp
-Project-URL: Documentation, https://github.com/yourusername/railgun-mcp#readme
-Project-URL: Repository, https://github.com/yourusername/railgun-mcp
-Project-URL: Issues, https://github.com/yourusername/railgun-mcp/issues
+Project-URL: Homepage, https://github.com/railgun-org/railgun-mcp
+Project-URL: Documentation, https://github.com/railgun-org/railgun-mcp#readme
+Project-URL: Repository, https://github.com/railgun-org/railgun-mcp
+Project-URL: Issues, https://github.com/railgun-org/railgun-mcp/issues
 Keywords: mcp,railgun,privacy,defi,ethereum,web3
 Classifier: Development Status :: 4 - Beta
 Classifier: Intended Audience :: Developers
@@ -18,11 +18,19 @@ Classifier: Programming Language :: Python :: 3.11
 Classifier: Programming Language :: Python :: 3.12
 Classifier: Topic :: Software Development :: Libraries
 Classifier: Topic :: Internet :: WWW/HTTP
-Requires-Python: >=3.7
+Requires-Python: >=3.10
 Description-Content-Type: text/markdown
-Provides-Extra: server
-Provides-Extra: dev
 License-File: LICENSE
+Requires-Dist: aiohttp>=3.9.0
+Provides-Extra: server
+Requires-Dist: fastmcp>=0.1.0; extra == "server"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: black>=23.0; extra == "dev"
+Requires-Dist: isort>=5.12; extra == "dev"
+Requires-Dist: mypy>=1.0; extra == "dev"
+Dynamic: license-file
 
 # 🛡️ Railgun MCP Server
 

@@ -77,12 +77,13 @@ async def get_api_client() -> RailgunAPIClient:
     """Get or create API client instance"""
     global api_client
     if not api_client:
-        if not config.api_key:
+        if not config.private_key:
             raise Exception(
-                "RAILGUN_API_KEY not configured. Set it in environment or ~/.railgun/config.json"
+                "⚠️  RAILGUN_PRIVATE_KEY not configured. This server needs a complete rewrite - see ARCHITECTURE_UPDATE.md"
             )
+        # NOTE: This is still using fake API calls and needs to be replaced with real blockchain interaction
         api_client = await RailgunAPIClient(
-            config.api_key, config.railgun_api_url
+            config.private_key, "fake-api-url"
         ).__aenter__()
     return api_client
 
@@ -1386,15 +1387,17 @@ async def check_config() -> Dict[str, Any]:
     return {
         "success": True,
         "config": {
-            "api_key_set": bool(config.api_key),
+            "private_key_set": bool(config.private_key),
             "wallet_password_set": bool(config.wallet_password),
-            "api_url": config.railgun_api_url,
+            "railgun_contracts": config.railgun_contracts,
             "rpc_endpoints": {
                 k: v.split("/")[2] if "/" in v else v
                 for k, v in config.rpc_endpoints.items()
             },
         },
-        "message": "Use environment variables or ~/.railgun/config.json to configure",
+        "warning": "⚠️  This MCP server currently has fake API calls and needs a complete rewrite to work with the real RAILGUN protocol.",
+        "required_fix": "See ARCHITECTURE_UPDATE.md for implementation details",
+        "message": "Use RAILGUN_PRIVATE_KEY environment variable or ~/.railgun/config.json to configure",
     }
 
 
