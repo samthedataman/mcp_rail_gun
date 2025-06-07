@@ -5,7 +5,7 @@ This package provides a comprehensive MCP server for interacting with the Railgu
 privacy protocol, enabling private DeFi transactions across multiple networks.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __author__ = "Sam Savage"
 __license__ = "MIT"
 

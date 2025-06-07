@@ -52,7 +52,7 @@ pip install -e .
 
 **Option 1: Environment Variables**
 ```bash
-export RAILGUN_API_KEY="your-api-key-here"
+export RAILGUN_PRIVATE_KEY="0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
 export RAILGUN_WALLET_PASSWORD="your-secure-password"
 export ETHEREUM_RPC_URL="https://eth-mainnet.g.alchemy.com/v2/your-key"
 ```
@@ -61,7 +61,7 @@ export ETHEREUM_RPC_URL="https://eth-mainnet.g.alchemy.com/v2/your-key"
 Create `~/.railgun/config.json`:
 ```json
 {
-  "api_key": "your-railgun-api-key-here",
+  "private_key": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
   "wallet_password": "your-secure-wallet-password",
   "rpc_endpoints": {
     "ethereum": "https://eth-mainnet.g.alchemy.com/v2/your-key",
@@ -70,6 +70,9 @@ Create `~/.railgun/config.json`:
   }
 }
 ```
+
+**Option 3: Claude Desktop Configuration**
+See [`examples/CLAUDE_DESKTOP_SETUP.md`](./examples/CLAUDE_DESKTOP_SETUP.md) for detailed Claude Desktop setup instructions.
 
 ### Run the Server
 
@@ -81,22 +84,28 @@ python -m railgun_mcp
 railgun-mcp
 ```
 
-### Connect with MCP Client
+### Connect with MCP Client (Claude Desktop)
 
-Add to your MCP client configuration:
+Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json`):
 ```json
 {
   "mcpServers": {
-    "railgun": {
+    "railgun-mcp": {
       "command": "python",
       "args": ["-m", "railgun_mcp"],
       "env": {
-        "RAILGUN_API_KEY": "your-api-key"
+        "RAILGUN_PRIVATE_KEY": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+        "RAILGUN_WALLET_PASSWORD": "your-secure-password",
+        "ETHEREUM_RPC_URL": "https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY"
       }
     }
   }
 }
 ```
+
+**⚠️ Important**: Replace the example private key with your actual wallet private key.
+
+**📋 For detailed setup instructions**: See [`examples/CLAUDE_DESKTOP_SETUP.md`](./examples/CLAUDE_DESKTOP_SETUP.md)
 
 ## 🛠️ Available Tools
 

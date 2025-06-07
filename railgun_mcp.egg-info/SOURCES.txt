@@ -3,7 +3,9 @@ MANIFEST.in
 README.md
 pyproject.toml
 requirements.txt
+examples/CLAUDE_DESKTOP_SETUP.md
 examples/basic_usage.py
+examples/claude_desktop_config_sample.json
 examples/config_example.json
 examples/mcp_client_config.json
 railgun_mcp/__init__.py
