@@ -29,10 +29,14 @@ async def basic_operations():
     print("   - Use the tools through your AI assistant or MCP client")
     print()
     print("✅ Configuration check:")
-    print(f"   API key configured: {bool(config.api_key)}")
+    print(f"   Private key configured: {bool(config.private_key)}")
     print(f"   Wallet password configured: {bool(config.wallet_password)}")
-    print(f"   API URL: {config.railgun_api_url}")
+    print(f"   RAILGUN contracts loaded: {len(config.railgun_contracts)} networks")
     print(f"   RPC endpoints configured: {len(config.rpc_endpoints)}")
+    print(f"   Networks supported: {list(config.railgun_contracts.keys())}")
+    print()
+    print("⚠️  Important: This MCP server needs blockchain integration.")
+    print("   See ARCHITECTURE_UPDATE.md for implementation details.")
 
 
 async def privacy_workflow():
